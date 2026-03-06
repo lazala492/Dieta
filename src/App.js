@@ -617,34 +617,10 @@ export default function DietaInteractiva() {
       else { const m = document.createElement("meta"); m.name = name; m.content = content; document.head.appendChild(m); }
     });
 
-    // Genera icono PNG via canvas (sin miniatura de Chrome)
-    const makeIcon = (size) => {
-      const canvas = document.createElement("canvas");
-      canvas.width = size; canvas.height = size;
-      const ctx = canvas.getContext("2d");
-      const r = size * 0.18;
-      ctx.beginPath();
-      ctx.moveTo(r, 0); ctx.lineTo(size - r, 0);
-      ctx.quadraticCurveTo(size, 0, size, r);
-      ctx.lineTo(size, size - r);
-      ctx.quadraticCurveTo(size, size, size - r, size);
-      ctx.lineTo(r, size); ctx.quadraticCurveTo(0, size, 0, size - r);
-      ctx.lineTo(0, r); ctx.quadraticCurveTo(0, 0, r, 0);
-      ctx.closePath();
-      ctx.fillStyle = "#1a2a1a"; ctx.fill();
-      ctx.font = `${size * 0.58}px serif`;
-      ctx.textAlign = "center"; ctx.textBaseline = "middle";
-      ctx.fillText("🥗", size / 2, size / 2 + size * 0.04);
-      return canvas.toDataURL("image/png");
-    };
-
-    const icon192 = makeIcon(192);
-    const icon512 = makeIcon(512);
-
     // Apple touch icon
     if (!document.querySelector('link[rel="apple-touch-icon"]')) {
       const l = document.createElement("link");
-      l.rel = "apple-touch-icon"; l.href = icon192;
+      l.rel = "apple-touch-icon"; l.href = "https://fav.farm/%F0%9F%A5%97";
       document.head.appendChild(l);
     }
 
@@ -653,8 +629,8 @@ export default function DietaInteractiva() {
       start_url: "/", display: "standalone",
       background_color: "#1a2a1a", theme_color: "#1a2a1a",
       icons: [
-        { src: icon192, sizes: "192x192", type: "image/png" },
-        { src: icon512, sizes: "512x512", type: "image/png" },
+        { src: "https://fav.farm/%F0%9F%A5%97", sizes: "192x192", type: "image/png" },
+        { src: "https://fav.farm/%F0%9F%A5%97", sizes: "512x512", type: "image/png" },
       ]
     };
     const blob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
