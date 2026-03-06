@@ -604,41 +604,64 @@ export default function DietaInteractiva() {
   useEffect(() => {
     document.title = "Dieta Carlos";
     const metas = [
-      { name: "viewport",                           content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" },
-      { name: "mobile-web-app-capable",             content: "yes" },
-      { name: "apple-mobile-web-app-capable",       content: "yes" },
-      { name: "apple-mobile-web-app-title",         content: "Dieta Carlos" },
+      { name: "viewport",                              content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" },
+      { name: "mobile-web-app-capable",                content: "yes" },
+      { name: "apple-mobile-web-app-capable",          content: "yes" },
+      { name: "apple-mobile-web-app-title",            content: "Dieta Carlos" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
-      { name: "theme-color",                        content: "#1a2a1a" },
+      { name: "theme-color",                           content: "#1a2a1a" },
     ];
     metas.forEach(({ name, content }) => {
       const existing = document.querySelector(`meta[name="${name}"]`);
       if (existing) { existing.content = content; }
-      else {
-        const m = document.createElement("meta");
-        m.name = name; m.content = content;
-        document.head.appendChild(m);
-      }
+      else { const m = document.createElement("meta"); m.name = name; m.content = content; document.head.appendChild(m); }
     });
-    const svgIcon = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231a2a1a'/><text y='72' x='50' text-anchor='middle' font-size='60'>🥗</text></svg>`;
+
+    // Genera icono PNG via canvas (sin miniatura de Chrome)
+    const makeIcon = (size) => {
+      const canvas = document.createElement("canvas");
+      canvas.width = size; canvas.height = size;
+      const ctx = canvas.getContext("2d");
+      const r = size * 0.18;
+      ctx.beginPath();
+      ctx.moveTo(r, 0); ctx.lineTo(size - r, 0);
+      ctx.quadraticCurveTo(size, 0, size, r);
+      ctx.lineTo(size, size - r);
+      ctx.quadraticCurveTo(size, size, size - r, size);
+      ctx.lineTo(r, size); ctx.quadraticCurveTo(0, size, 0, size - r);
+      ctx.lineTo(0, r); ctx.quadraticCurveTo(0, 0, r, 0);
+      ctx.closePath();
+      ctx.fillStyle = "#1a2a1a"; ctx.fill();
+      ctx.font = `${size * 0.58}px serif`;
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText("🥗", size / 2, size / 2 + size * 0.04);
+      return canvas.toDataURL("image/png");
+    };
+
+    const icon192 = makeIcon(192);
+    const icon512 = makeIcon(512);
+
+    // Apple touch icon
+    if (!document.querySelector('link[rel="apple-touch-icon"]')) {
+      const l = document.createElement("link");
+      l.rel = "apple-touch-icon"; l.href = icon192;
+      document.head.appendChild(l);
+    }
+
     const manifest = {
       name: "Dieta Carlos", short_name: "Dieta",
       start_url: "/", display: "standalone",
-      background_color: "#f2efe9", theme_color: "#1a2a1a",
+      background_color: "#1a2a1a", theme_color: "#1a2a1a",
       icons: [
-        { src: svgIcon, sizes: "192x192", type: "image/svg+xml" },
-        { src: svgIcon, sizes: "512x512", type: "image/svg+xml" },
+        { src: icon192, sizes: "192x192", type: "image/png" },
+        { src: icon512, sizes: "512x512", type: "image/png" },
       ]
     };
     const blob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
-    const url  = URL.createObjectURL(blob);
+    const url = URL.createObjectURL(blob);
     const existing = document.querySelector('link[rel="manifest"]');
     if (existing) { existing.href = url; }
-    else {
-      const l = document.createElement("link");
-      l.rel = "manifest"; l.href = url;
-      document.head.appendChild(l);
-    }
+    else { const l = document.createElement("link"); l.rel = "manifest"; l.href = url; document.head.appendChild(l); }
   }, []);
 
   const d = dias[diaIdx];
