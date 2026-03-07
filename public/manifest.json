@@ -1,20 +1,23 @@
 {
-    "name": "Dieta Carlos",
-    "short_name": "Dieta",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#1a2a1a",
-    "theme_color": "#1a2a1a",
-    "icons": [
-      {
-        "src": "https://fav.farm/%F0%9F%A5%97",
-        "sizes": "192x192",
-        "type": "image/png"
-      },
-      {
-        "src": "https://fav.farm/%F0%9F%A5%97",
-        "sizes": "512x512",
-        "type": "image/png"
-      }
-    ]
-  }
+  "name": "Dieta Carlos",
+  "short_name": "Dieta",
+  "description": "Planificador de dieta semanal – Definición",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a2a1a",
+  "theme_color": "#1a2a1a",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
